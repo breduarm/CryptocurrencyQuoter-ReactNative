@@ -13,6 +13,13 @@ const styles = StyleSheet.create({
     header: {
         paddingTop: Platform.OS === 'ios' ? 16 : 8,
         fontFamily: 'Lato-Black',
+        backgroundColor: '#5949E2',
+        paddingBottom: 12,
+        textAlign: 'center',
+        textTransform: 'uppercase',
+        fontSize: 20,
+        color: '#FFFFFF',
+        marginBottom: 30,
     },
 });
 
