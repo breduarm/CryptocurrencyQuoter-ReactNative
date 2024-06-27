@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import Header from './components/Header';
 
 // type SectionProps = PropsWithChildren<{
 //   title: string;
@@ -38,7 +39,7 @@ function App(): React.JSX.Element {
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
         <View style={backgroundContentColor}>
-          <Text>Cryptocurrency Quoter</Text>
+          <Header />
         </View>
       </ScrollView>
     </SafeAreaView>
