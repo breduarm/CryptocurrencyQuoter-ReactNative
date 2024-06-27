@@ -1,6 +1,7 @@
 import React from 'react';
 // import type {PropsWithChildren} from 'react';
 import {
+  Image,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -40,12 +41,19 @@ function App(): React.JSX.Element {
         style={backgroundStyle}>
         <View style={backgroundContentColor}>
           <Header />
+          <Image style={styles.bannerImg} source={require('./assets/img/cryptomonedas.png')} />
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  bannerImg: {
+    width: '100%',
+    height: 150,
+    marginHorizontal: '2.5%',
+  }
+});
 
 export default App;
