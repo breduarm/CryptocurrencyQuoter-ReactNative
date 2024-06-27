@@ -13,6 +13,7 @@ import {
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Header from './components/Header';
+import Form from './components/Form';
 
 // type SectionProps = PropsWithChildren<{
 //   title: string;
@@ -41,7 +42,13 @@ function App(): React.JSX.Element {
         style={backgroundStyle}>
         <View style={backgroundContentColor}>
           <Header />
-          <Image style={styles.bannerImg} source={require('./assets/img/cryptomonedas.png')} />
+          <Image
+            style={styles.bannerImg}
+            source={require('./assets/img/cryptomonedas.png')}
+          />
+          <View style={styles.content}>
+            <Form />
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -53,7 +60,10 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 150,
     marginHorizontal: '2.5%',
-  }
+  },
+  content: {
+    marginHorizontal: '2.5%',
+  },
 });
 
 export default App;
