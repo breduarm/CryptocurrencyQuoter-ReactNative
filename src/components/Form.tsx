@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native'
 const Form = () => {
   return (
     <View>
-      <Text style={styles.label}>Moneda</Text>
+      <Text style={styles.label}>Currency</Text>
       <Picker>
         <Picker.Item label='- Select -' value=''/>
         <Picker.Item label='United Stated Dollar (USD)' value='USD'/>
@@ -13,7 +13,7 @@ const Form = () => {
         <Picker.Item label='Euro (EUR)' value='EUR'/>
         <Picker.Item label='British Pound (GBP)' value='GBP'/>
       </Picker>
-      <Text style={styles.label}>Crypto moneda</Text>
+      <Text style={styles.label}>Crypto currency</Text>
     </View>
   )
 }
