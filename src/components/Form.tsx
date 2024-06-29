@@ -6,7 +6,7 @@ import {StyleSheet, Text, View} from 'react-native';
 const Form = () => {
   const [currency, setCurrency] = useState('');
   const [cryptoCurrency, setCryptoCurrency] = useState('');
-  const [cryptoCurrencies, setCryptoCurrencies] = useState('');
+  const [cryptoCurrencies, setCryptoCurrencies] = useState([]);
 
   useEffect(() => {
     getCryptoCurrency();
@@ -23,6 +23,7 @@ const Form = () => {
     <View>
       <Text style={styles.label}>Currency</Text>
       <Picker
+        itemStyle={{height: 120}}
         selectedValue={currency}
         onValueChange={(itemSelected: string) => {
           setCurrency(itemSelected);
@@ -34,6 +35,20 @@ const Form = () => {
         <Picker.Item label="British Pound (GBP)" value="GBP" />
       </Picker>
       <Text style={styles.label}>Crypto currency</Text>
+      <Picker
+        selectedValue={cryptoCurrency}
+        onValueChange={(itemSelected: string) => {
+          setCryptoCurrency(itemSelected);
+        }}>
+        <Picker.Item label="- Select -" value="" />
+        {cryptoCurrencies.map(crypto => (
+          <Picker.Item
+            key={crypto.CoinInfo.Id}
+            label={crypto.CoinInfo.FullName}
+            value={crypto.CoinInfo.Name}
+          />
+        ))}
+      </Picker>
     </View>
   );
 };
