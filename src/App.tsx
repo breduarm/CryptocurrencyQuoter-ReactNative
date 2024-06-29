@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 // import type {PropsWithChildren} from 'react';
 import {
   Image,
@@ -14,6 +14,7 @@ import {
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Header from './components/Header';
 import Form from './components/Form';
+import axios from 'axios';
 
 // type SectionProps = PropsWithChildren<{
 //   title: string;
@@ -24,6 +25,19 @@ function App(): React.JSX.Element {
   const [currency, setCurrency] = useState('');
   const [cryptoCurrency, setCryptoCurrency] = useState('');
   const [shouldGet, setShouldGet] = useState(false);
+
+  useEffect(() => {
+    if (shouldGet) {
+      quoteCryptoCurrency();
+      setShouldGet(false);
+    }
+  }, [shouldGet]);
+
+
+  const quoteCryptoCurrency = async () => {
+    const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${cryptoCurrency}}&tsyms=${currency}`;
+    const result = await axios.get(url);
+  }
 
   const isDarkMode = useColorScheme() === 'dark';
 
