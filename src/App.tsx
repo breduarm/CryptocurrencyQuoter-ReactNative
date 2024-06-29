@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 // import type {PropsWithChildren} from 'react';
 import {
   Image,
@@ -21,6 +21,10 @@ import Form from './components/Form';
 // const Section = ({children, title}: SectionProps): React.JSX.Element => {}
 
 function App(): React.JSX.Element {
+  const [currency, setCurrency] = useState('');
+  const [cryptoCurrency, setCryptoCurrency] = useState('');
+  const [shouldGet, setShouldGet] = useState(false);
+
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -47,7 +51,13 @@ function App(): React.JSX.Element {
             source={require('./assets/img/cryptomonedas.png')}
           />
           <View style={styles.content}>
-            <Form />
+            <Form
+              currency={currency}
+              cryptoCurrency={cryptoCurrency}
+              setCurrency={setCurrency}
+              setCryptoCurrency={setCryptoCurrency}
+              setShouldGet={setShouldGet}
+            />
           </View>
         </View>
       </ScrollView>

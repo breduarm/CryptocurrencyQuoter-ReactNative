@@ -1,11 +1,9 @@
 import {Picker} from '@react-native-picker/picker';
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {Alert, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 
-const Form = () => {
-  const [currency, setCurrency] = useState('');
-  const [cryptoCurrency, setCryptoCurrency] = useState('');
+const Form = ({currency, cryptoCurrency, setCurrency, setCryptoCurrency, setShouldGet}) => {
   const [cryptoCurrencies, setCryptoCurrencies] = useState([]);
 
   useEffect(() => {
@@ -20,8 +18,17 @@ const Form = () => {
   };
 
   const quotePrice = () => {
-    
-  }
+    if (currency.trim() === '' || cryptoCurrency.trim() == '') {
+      showAlert();
+      return;
+    }
+
+    setShouldGet(true);
+  };
+
+  const showAlert = () => {
+    Alert.alert('Error', 'Both fiels are required', [{text: 'Ok'}]);
+  };
 
   return (
     <View>
@@ -54,9 +61,11 @@ const Form = () => {
         ))}
       </Picker>
 
-      <TouchableHighlight style={styles.btnQuote} onPress={() => {
-        quotePrice();
-      }}>
+      <TouchableHighlight
+        style={styles.btnQuote}
+        onPress={() => {
+          quotePrice();
+        }}>
         <Text style={styles.btnQuoteText}>Quote</Text>
       </TouchableHighlight>
     </View>
