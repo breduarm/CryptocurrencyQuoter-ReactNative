@@ -4,7 +4,7 @@ import {Platform, StyleSheet, Text, View} from 'react-native';
 const Header = () => {
   return (
     <View>
-      <Text style={styles.header}> Crypto currency </Text>
+      <Text style={styles.header}> Crypto currency Quoter </Text>
     </View>
   );
 };
