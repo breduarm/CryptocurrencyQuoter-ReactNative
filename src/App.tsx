@@ -6,7 +6,6 @@ import {
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
   useColorScheme,
   View,
 } from 'react-native';
@@ -15,6 +14,7 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Header from './components/Header';
 import Form from './components/Form';
 import axios from 'axios';
+import Quotation from './components/Quotation';
 
 // type SectionProps = PropsWithChildren<{
 //   title: string;
@@ -25,19 +25,20 @@ function App(): React.JSX.Element {
   const [currency, setCurrency] = useState('');
   const [cryptoCurrency, setCryptoCurrency] = useState('');
   const [shouldGet, setShouldGet] = useState(false);
+  const [quoteResult, setQuoteResult] = useState({});
 
   useEffect(() => {
     if (shouldGet) {
-      quoteCryptoCurrency();
+      getCryptoCurrencyQuote();
       setShouldGet(false);
     }
   }, [shouldGet]);
 
-
-  const quoteCryptoCurrency = async () => {
+  const getCryptoCurrencyQuote = async () => {
     const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${cryptoCurrency}}&tsyms=${currency}`;
     const result = await axios.get(url);
-  }
+    setQuoteResult(result.data.DISPLAY[cryptoCurrency][currency]);
+  };
 
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -72,6 +73,7 @@ function App(): React.JSX.Element {
               setCryptoCurrency={setCryptoCurrency}
               setShouldGet={setShouldGet}
             />
+            <Quotation quotation={quoteResult} />
           </View>
         </View>
       </ScrollView>
