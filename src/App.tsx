@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 // import type {PropsWithChildren} from 'react';
 import {
+  ActivityIndicator,
   Image,
   SafeAreaView,
   ScrollView,
@@ -26,6 +27,7 @@ function App(): React.JSX.Element {
   const [cryptoCurrency, setCryptoCurrency] = useState('');
   const [shouldGet, setShouldGet] = useState(false);
   const [quoteResult, setQuoteResult] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (shouldGet) {
@@ -37,7 +39,12 @@ function App(): React.JSX.Element {
   const getCryptoCurrencyQuote = async () => {
     const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${cryptoCurrency}}&tsyms=${currency}`;
     const result = await axios.get(url);
-    setQuoteResult(result.data.DISPLAY[cryptoCurrency][currency]);
+
+    setLoading(true);
+    setTimeout(() => {
+      setQuoteResult(result.data.DISPLAY[cryptoCurrency][currency]);
+      setLoading(false);
+    }, 3000);
   };
 
   const isDarkMode = useColorScheme() === 'dark';
@@ -50,21 +57,30 @@ function App(): React.JSX.Element {
     backgroundColor: isDarkMode ? Colors.black : Colors.white,
   };
 
+  const component = loading ? (
+    <ActivityIndicator size="large" color="#5949E2" />
+  ) : (
+    <Quotation quotation={quoteResult} />
+  );
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
+
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
         <View style={backgroundContentColor}>
           <Header />
+
           <Image
             style={styles.bannerImg}
             source={require('./assets/img/cryptomonedas.png')}
           />
+
           <View style={styles.content}>
             <Form
               currency={currency}
@@ -73,7 +89,8 @@ function App(): React.JSX.Element {
               setCryptoCurrency={setCryptoCurrency}
               setShouldGet={setShouldGet}
             />
-            <Quotation quotation={quoteResult} />
+
+            <View style={{marginTop: 40}}>{component}</View>
           </View>
         </View>
       </ScrollView>
