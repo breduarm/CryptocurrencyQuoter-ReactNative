@@ -5,7 +5,7 @@ const Quotation = ({quotation}) => {
   if (Object.keys(quotation).length === 0) return null;
 
   return (
-    <View style={styles.result}>
+    <View style={[styles.text, styles.result]}>
       <Text style={styles.text}>
         <Text style={styles.span}>{quotation.PRICE}</Text>
       </Text>
@@ -30,10 +30,23 @@ const Quotation = ({quotation}) => {
 };
 
 const styles = StyleSheet.create({
-  result: {},
-  text: {},
-  price: {},
-  span: {},
+  result: {
+    backgroundColor: '#5E49E2',
+    padding: 20,
+    marginTop: 20,
+  },
+  text: {
+    color: '#FFFFFF',
+    fontFamily: 'Lato-Regular',
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  price: {
+    fontSize: 38,
+  },
+  span: {
+    fontFamily: 'Lato-Black',
+  },
 });
 
 export default Quotation;
