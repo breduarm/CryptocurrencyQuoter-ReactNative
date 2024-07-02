@@ -1,10 +1,31 @@
 import {Picker} from '@react-native-picker/picker';
 import axios from 'axios';
-import React, {useEffect, useState} from 'react';
+import React, {
+  Dispatch,
+  PropsWithChildren,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import {Alert, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import CryptoCurrencyResponse from '../adapters/responses/CryptoCurrencyResponse';
 
-const Form = ({currency, cryptoCurrency, setCurrency, setCryptoCurrency, setShouldGet}) => {
-  const [cryptoCurrencies, setCryptoCurrencies] = useState([]);
+type FormProps = PropsWithChildren<{
+  currency: string;
+  cryptoCurrency: string;
+  setCurrency: Dispatch<SetStateAction<string>>;
+  setCryptoCurrency: Dispatch<SetStateAction<string>>;
+  setShouldGetQuote: Dispatch<SetStateAction<boolean>>;
+}>;
+
+const Form = ({
+  currency,
+  cryptoCurrency,
+  setCurrency,
+  setCryptoCurrency,
+  setShouldGetQuote,
+}: FormProps): React.JSX.Element => {
+  const [cryptoCurrencies, setCryptoCurrencies] = useState<CryptoCurrencyResponse[]>([]);
 
   useEffect(() => {
     getCryptoCurrency();
@@ -23,7 +44,7 @@ const Form = ({currency, cryptoCurrency, setCurrency, setCryptoCurrency, setShou
       return;
     }
 
-    setShouldGet(true);
+    setShouldGetQuote(true);
   };
 
   const showAlert = () => {

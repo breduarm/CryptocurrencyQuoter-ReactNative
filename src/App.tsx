@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-// import type {PropsWithChildren} from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -14,37 +13,48 @@ import {
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Header from './components/Header';
 import Form from './components/Form';
-import axios from 'axios';
-import Quotation from './components/Quotation';
-
-// type SectionProps = PropsWithChildren<{
-//   title: string;
-// }>;
-// const Section = ({children, title}: SectionProps): React.JSX.Element => {}
+import axios, {AxiosResponse} from 'axios';
+import QuotationComponent from './components/QuotationComponent';
+import Quotation from './adapters/entities/Quotation';
+import QuotationResponse from './adapters/responses/QuotationResponse';
 
 function App(): React.JSX.Element {
   const [currency, setCurrency] = useState('');
   const [cryptoCurrency, setCryptoCurrency] = useState('');
-  const [shouldGet, setShouldGet] = useState(false);
-  const [quoteResult, setQuoteResult] = useState({});
+  const [shouldGetQuote, setShouldGetQuote] = useState(false);
+  const [quoteResult, setQuoteResult] = useState<Quotation>(new Quotation());
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (shouldGet) {
+    if (shouldGetQuote) {
       getCryptoCurrencyQuote();
-      setShouldGet(false);
+      setShouldGetQuote(false);
     }
-  }, [shouldGet]);
+  }, [shouldGetQuote]);
 
   const getCryptoCurrencyQuote = async () => {
-    const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${cryptoCurrency}}&tsyms=${currency}`;
-    const result = await axios.get(url);
+    try {
+      const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${cryptoCurrency}&tsyms=${currency}`;
+      const response: AxiosResponse = await axios.get(url);
+      const quotationResponse: QuotationResponse = response.data.DISPLAY[cryptoCurrency][currency];
 
-    setLoading(true);
-    setTimeout(() => {
-      setQuoteResult(result.data.DISPLAY[cryptoCurrency][currency]);
+      setLoading(true);
+      setTimeout(() => {
+        setQuoteResult(
+          new Quotation(
+            quotationResponse.PRICE,
+            quotationResponse.HIGHDAY,
+            quotationResponse.LOWDAY,
+            quotationResponse.CHANGEPCT24HOUR,
+            quotationResponse.LASTUPDATE,
+          ),
+        );
+        setLoading(false);
+      }, 3000);
+    } catch (e) {
       setLoading(false);
-    }, 3000);
+      console.error('Error getting Cryptocurrency quote', e);
+    }
   };
 
   const isDarkMode = useColorScheme() === 'dark';
@@ -60,7 +70,7 @@ function App(): React.JSX.Element {
   const component = loading ? (
     <ActivityIndicator size="large" color="#5949E2" />
   ) : (
-    <Quotation quotation={quoteResult} />
+    <QuotationComponent quotation={quoteResult} />
   );
 
   return (
@@ -87,7 +97,7 @@ function App(): React.JSX.Element {
               cryptoCurrency={cryptoCurrency}
               setCurrency={setCurrency}
               setCryptoCurrency={setCryptoCurrency}
-              setShouldGet={setShouldGet}
+              setShouldGetQuote={setShouldGetQuote}
             />
 
             <View style={{marginTop: 40}}>{component}</View>
