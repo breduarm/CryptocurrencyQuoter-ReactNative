@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -13,49 +13,22 @@ import {
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Header from './components/Header';
 import Form from './components/Form';
-import axios, {AxiosResponse} from 'axios';
 import QuotationComponent from './components/QuotationComponent';
-import Quotation from './adapters/entities/Quotation';
-import QuotationResponse from './adapters/responses/QuotationResponse';
+import useGetCryptoCurrencyQuote from './hooks/useGetCryptoCurrencyQuote';
 
 function App(): React.JSX.Element {
   const [currency, setCurrency] = useState('');
   const [cryptoCurrency, setCryptoCurrency] = useState('');
   const [shouldGetQuote, setShouldGetQuote] = useState(false);
-  const [quoteResult, setQuoteResult] = useState<Quotation>(new Quotation());
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (shouldGetQuote) {
-      getCryptoCurrencyQuote();
-      setShouldGetQuote(false);
-    }
-  }, [shouldGetQuote]);
-
-  const getCryptoCurrencyQuote = async () => {
-    try {
-      const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${cryptoCurrency}&tsyms=${currency}`;
-      const response: AxiosResponse = await axios.get(url);
-      const quotationResponse: QuotationResponse = response.data.DISPLAY[cryptoCurrency][currency];
-
-      setLoading(true);
-      setTimeout(() => {
-        setQuoteResult(
-          new Quotation(
-            quotationResponse.PRICE,
-            quotationResponse.HIGHDAY,
-            quotationResponse.LOWDAY,
-            quotationResponse.CHANGEPCT24HOUR,
-            quotationResponse.LASTUPDATE,
-          ),
-        );
-        setLoading(false);
-      }, 3000);
-    } catch (e) {
-      setLoading(false);
-      console.error('Error getting Cryptocurrency quote', e);
-    }
-  };
+  const {quoteResult, error} = useGetCryptoCurrencyQuote(
+    shouldGetQuote,
+    cryptoCurrency,
+    currency,
+    setShouldGetQuote,
+    setLoading,
+  );
 
   const isDarkMode = useColorScheme() === 'dark';
 
